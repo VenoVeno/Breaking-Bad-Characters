@@ -21,7 +21,8 @@ class CharacterPreview extends React.Component {
         super(props);
         this.state = {
             character: {},
-            quotes: ""
+            quotes: "",
+            message: "Please Hold on! Fetching You the Quotes Said by the Actor!"
         }
     }
 
@@ -46,7 +47,8 @@ class CharacterPreview extends React.Component {
             .then(responseJSON => {
                 console.log(responseJSON)
                 this.setState({
-                    quotes: responseJSON
+                    quotes: responseJSON,
+                    message: responseJSON.length <= 0 ? "Seems No Quotes Are Present!" : ""
                 })
             })
 
@@ -56,7 +58,7 @@ class CharacterPreview extends React.Component {
     }
 
     render() {
-        const { character, quotes } = this.state
+        const { character, quotes, message } = this.state
         let occupations = "";
 
         console.log(character)
@@ -103,24 +105,12 @@ class CharacterPreview extends React.Component {
                                 <InfoContainer Icon={SeasonIcon} content={character.appearance.toString()}
                                     className="season" labelContent="Seasons Acted" />
 
-
                                 {
                                     !_isEmpty(quotes)
-                                        ? <>
-                                            {
-                                                quotes.map(quotedata => {
-                                                    return (
-                                                        <>
-                                                            {/* <hr /> */}
-                                                            {/* <InfoContainer Icon={QuotesIcon} content={quotedata.quote}
-                                                                className="quotes" labelContent="" /> */}
-                                                            <Quotes className="quotes" content={quotedata.quote} />
-                                                        </>
-                                                    )
-                                                })
-                                            }
-                                        </>
-                                        : null
+                                        ? quotes.map(quotedata =>
+                                            <Quotes className="quotes" content={quotedata.quote} />
+                                        )
+                                        : <div className="search-error">{message}</div>
                                 }
                             </div>
                         </div>
