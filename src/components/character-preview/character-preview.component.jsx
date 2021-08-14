@@ -7,7 +7,6 @@ import { ReactComponent as BirthdayIcon } from '../../assets/DOB.svg';
 import { ReactComponent as StatusIcon } from '../../assets/Status.svg';
 import { ReactComponent as PotrayIcon } from '../../assets/Potray.svg';
 import { ReactComponent as SeasonIcon } from '../../assets/Season.svg';
-import { ReactComponent as QuotesIcon } from '../../assets/Quotes.svg';
 
 import _isEmpty from 'lodash/isEmpty';
 
