@@ -65,8 +65,24 @@ class HomePage extends React.Component {
     updatedCharacterListFiltered = () => {
         const { characterList, searchTerm } = this.state;
 
+        // NOW YOU CAN SEARCH FOR name, nickname, potrayed, occupation, status, birthday
         const filteredCharacterList = characterList
-            .filter(character => character.name.toLowerCase().includes(searchTerm.toLowerCase()))
+            .filter(character => {
+                return (
+                    character.name.toLowerCase()
+                        .includes(searchTerm.toLowerCase())
+                    || character.nickname.toLowerCase()
+                        .includes(searchTerm.toLowerCase())
+                    || character.portrayed.toLowerCase()
+                        .includes(searchTerm.toLowerCase())
+                    || character.occupation.toString().toLowerCase()
+                        .includes(searchTerm.toLowerCase())
+                    || character.status.toLowerCase()
+                        .includes(searchTerm.toLowerCase())
+                    || character.birthday.toLowerCase()
+                        .includes(searchTerm.toLowerCase())
+                )
+            })
 
         console.log(filteredCharacterList)
 
