@@ -1,0 +1,103 @@
+.home-page-container {
+    .logo {
+        .home-page-logo {
+            width: 3rem;
+            height: auto;
+        }
+    }
+    .characters-list {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+
+        .character {
+            height: 20rem;
+            margin: 1rem;
+            width: 15rem;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            .image-wrapper {
+                width: 9.1rem;
+                min-height: 12rem;
+
+                img {
+                    border-radius: 6%;
+                    height: 100%;
+                    width: 100%;
+                }
+            }
+
+            .details {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                height: 100%;
+                width: 100%;
+
+                .name {
+                    font-size: large;
+                    font-weight: 750;
+                }
+
+                .occupation {
+                    margin: 12px;
+                    width: 150px;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    text-align: center;
+                    opacity: 0.675;
+                }
+
+                .dob-status-container {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    gap: 24px;
+
+                    .birthday {
+                        font-size: smaller;
+                        opacity: 0.675;
+                    }
+
+                    .status {
+                        color: red;
+                    }
+
+                    .status.alive {
+                        color: green;
+                    }
+                }
+            }
+        }
+    }
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .button {
+            cursor: pointer;
+            padding: 12px 20px;
+            border: 1px solid #153d15;
+            border-radius: 8%;
+            width: 5rem;
+            text-align: center;
+            margin: 0px 16px;
+        }
+
+        .search-button {
+            width: 16rem;
+            font-family: inherit;
+            text-align: start;
+            cursor: initial;
+        }
+    }
+}

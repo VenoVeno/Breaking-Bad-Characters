@@ -1,0 +1,26 @@
+.root-container {
+  width: auto;
+  height: auto;
+  position: relative;
+  background-color: black;
+  color: white;
+
+  &:before {
+    content: "";
+    background-image: url("./assets/Breaking-Bad-icon.svg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: contain;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    opacity: 0.125;
+  }
+
+  .main-container {
+    position: relative;
+  }
+}

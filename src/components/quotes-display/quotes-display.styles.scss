@@ -1,0 +1,15 @@
+.quote {
+    padding-left: 8px;
+    margin: 20px;
+    padding: 4px;
+
+    &::before {
+        background: #1d4f1d;
+        content: "";
+        margin-left: -0.75rem;
+        position: absolute;
+        height: 24px;
+        width: 4px;
+        border-radius: 20%;
+    }
+}
