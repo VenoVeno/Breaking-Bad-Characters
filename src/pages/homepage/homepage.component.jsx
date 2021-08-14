@@ -2,7 +2,6 @@ import React from 'react';
 
 import { Properties } from '../../global.properties';
 
-import { ReactComponent as Logo } from '../../assets/Logo.svg';
 import shortid from 'shortid';
 
 import './homepage.styles.scss';
@@ -13,10 +12,12 @@ class HomePage extends React.Component {
 
         this.state = {
             characterList: [],
+            filteredCharacterList: [],
             countPerPage: 10,
             pageNumber: 1,
             maxPage: 0,
-            searchTerm: ""
+            searchTerm: "",
+            message: "Please Hold on! Getting You The Favourite Character's List!"
         }
     }
 
@@ -27,8 +28,8 @@ class HomePage extends React.Component {
                 console.log(responseJSON)
                 this.setState({
                     characterList: responseJSON,
-                    maxPage: (responseJSON.length + 9) / 10
-                })
+                    maxPage: (responseJSON.length + this.state.countPerPage - 1) / this.state.countPerPage
+                }, () => this.updatedCharacterListFiltered())
             })
     }
 
@@ -40,46 +41,57 @@ class HomePage extends React.Component {
     }
 
     nextPage = () => {
-        if (this.state.pageNumber + 1 <= this.state.maxPage)
+        if (this.state.pageNumber + 1 <= this.state.maxPage && this.isNextPageAvailable())
             this.setState({
                 pageNumber: this.state.pageNumber + 1
             })
     }
 
+    isNextPageAvailable = () => {
+        const { filteredCharacterList, countPerPage } = this.state;
+        if (this.state.pageNumber + 1 <= (filteredCharacterList.length + countPerPage - 1) / countPerPage)
+            return true
+        return false;
+    }
+
     updateSearchKey = (event) => {
         const { value, name } = event.target
         this.setState({
-            [name]: value
-        })
+            [name]: value,
+            pageNumber: 1,
+        }, () => this.updatedCharacterListFiltered())
+    }
+
+    updatedCharacterListFiltered = () => {
+        const { characterList, searchTerm } = this.state;
+
+        const filteredCharacterList = characterList
+            .filter(character => character.name.toLowerCase().includes(searchTerm.toLowerCase()))
+
+        console.log(filteredCharacterList)
+
+        if (filteredCharacterList.length <= 0)
+            this.setState({
+                message: "Oops! No Characters to Display!"
+            })
+        this.setState({ filteredCharacterList })
     }
 
     render() {
-        const { characterList, pageNumber, countPerPage, searchTerm } = this.state;
+        const { filteredCharacterList, searchTerm, pageNumber, countPerPage, message } = this.state;
         let occupations = "";
 
-        console.log("Page Number ", pageNumber)
-
-        console.log(this.props);
+        console.log(this.props, filteredCharacterList);
 
         return (
             <div className="home-page-container">
-                {/* <div className="header">
-                    <div className="image-container">
-
-                    </div>
-                    <div className="search-container">
-                        <input type="search" name="searchTerm" id="searchTerm"
-                            value={searchTerm} onChange={(event) => this.updateSearchKey(event)} />
-                    </div>
-                </div> */}
                 <div className="characters-list">
                     {
-                        characterList.length > 0
-                            ? characterList
+                        filteredCharacterList.length > 0
+                            ? filteredCharacterList
                                 .slice((pageNumber * countPerPage) - countPerPage, pageNumber * countPerPage)
-                                .filter(character => character.name.includes(searchTerm))
                                 .map(character => {
-                                    console.log(character.char_id)
+                                    console.log(character)
                                     return (
                                         <div className="character"
                                             onClick={
@@ -113,14 +125,14 @@ class HomePage extends React.Component {
                                         </div>
                                     )
                                 })
-                            : null
+                            : <div className="search-error">{message}</div>
                     }
                 </div>
                 <div className="pagination">
-                    <div className="button previous-page" onClick={() => this.previousPage()}>&laquo; Previous</div>
+                    <div className="button previous-page" onClick={() => this.previousPage()}>&laquo; Previous({pageNumber - 1})</div>
                     <input type="search" name="searchTerm" id="searchTerm" className="button search-button" placeholder="Search..."
                         value={searchTerm} onChange={(event) => this.updateSearchKey(event)} />
-                    <div className="button next-page" onClick={() => this.nextPage()}>Next &raquo;</div>
+                    <div className="button next-page" onClick={() => this.nextPage()}>Next &raquo;({parseInt((filteredCharacterList.length + countPerPage - 1) / countPerPage) - pageNumber})</div>
                 </div>
             </div>
         )

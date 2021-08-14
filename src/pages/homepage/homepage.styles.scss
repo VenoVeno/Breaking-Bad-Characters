@@ -5,6 +5,7 @@
             height: auto;
         }
     }
+
     .characters-list {
         display: flex;
         flex-wrap: wrap;
@@ -88,9 +89,10 @@
             padding: 12px 20px;
             border: 1px solid #153d15;
             border-radius: 8%;
-            width: 5rem;
+            width: 7rem;
             text-align: center;
             margin: 0px 16px;
+            user-select: none;
         }
 
         .search-button {
@@ -99,5 +101,12 @@
             text-align: start;
             cursor: initial;
         }
+    }
+
+    .search-error {
+        color: red;
+        margin: 12rem;
+        font-size: larger;
+        text-transform: uppercase;
     }
 }

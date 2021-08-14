@@ -1,7 +1,6 @@
 .root-container {
   width: auto;
   height: auto;
-  position: relative;
   background-color: black;
   color: white;
 
@@ -21,6 +20,10 @@
   }
 
   .main-container {
+    position: relative;
+  }
+
+  @media screen and(max-width: 700px) {
     position: relative;
   }
 }
