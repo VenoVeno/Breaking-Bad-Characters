@@ -10,10 +10,10 @@ import { ReactComponent as SeasonIcon } from '../../assets/Season.svg';
 
 import _isEmpty from 'lodash/isEmpty';
 
-import InfoContainer from '../info-container/info-container.component';
+import InfoContainer from '../../components/info-container/info-container.component';
 
 import './character-preview.styles.scss';
-import Quotes from '../quotes-display/quotes-display-component';
+import Quotes from '../../components/quotes-display/quotes-display-component';
 
 class CharacterPreview extends React.Component {
     constructor(props) {
@@ -21,6 +21,7 @@ class CharacterPreview extends React.Component {
         this.state = {
             character: {},
             quotes: "",
+            characterMessage: "Please Hold on! Fetching You the Character Details!",
             message: "Please Hold on! Fetching You the Quotes Said by the Actor!"
         }
     }
@@ -39,17 +40,23 @@ class CharacterPreview extends React.Component {
                 })
         }
 
-        console.log(character.name)
+        console.log(character)
 
-        fetch(`${Properties.QUOTES_API}?author=${character.name.replaceAll(" ", "+")}`, { method: "GET" })
-            .then(respone => respone.json())
-            .then(responseJSON => {
-                console.log(responseJSON)
-                this.setState({
-                    quotes: responseJSON,
-                    message: responseJSON.length <= 0 ? "Seems No Quotes Are Present!" : ""
+        if (!_isEmpty(character)) {
+            fetch(`${Properties.QUOTES_API}?author=${character.name.replaceAll(" ", "+")}`, { method: "GET" })
+                .then(respone => respone.json())
+                .then(responseJSON => {
+                    console.log(responseJSON)
+                    this.setState({
+                        quotes: responseJSON,
+                        message: responseJSON.length <= 0 ? "Seems No Quotes Are Present!" : ""
+                    })
                 })
+        } else {
+            this.setState({
+                characterMessage: "No Character Match Found! Double Check the Name..."
             })
+        }
 
         this.setState({
             character
@@ -57,7 +64,7 @@ class CharacterPreview extends React.Component {
     }
 
     render() {
-        const { character, quotes, message } = this.state
+        const { character, quotes, message, characterMessage } = this.state
         let occupations = "";
 
         console.log(character)
@@ -113,7 +120,7 @@ class CharacterPreview extends React.Component {
                                 }
                             </div>
                         </div>
-                        : null
+                        : <div className="no-character-error">{characterMessage}</div>
                 }
             </div>
         )

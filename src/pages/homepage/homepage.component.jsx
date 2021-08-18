@@ -17,7 +17,8 @@ class HomePage extends React.Component {
             pageNumber: 1,
             maxPage: 0,
             searchTerm: "",
-            message: "Please Hold on! Getting You The Favourite Character's List!"
+            message: "Please Hold on! Getting You The Favourite Character's List!",
+            searchFields: ["name", "nickname", "portrayed", "occupation", "status", "birthday", "category"]
         }
     }
 
@@ -63,26 +64,21 @@ class HomePage extends React.Component {
     }
 
     updatedCharacterListFiltered = () => {
-        const { characterList, searchTerm } = this.state;
+        let { characterList, searchTerm, searchFields } = this.state;
+        searchTerm = searchTerm.toLowerCase()
 
         // NOW YOU CAN SEARCH FOR name, nickname, potrayed, occupation, status, birthday
         const filteredCharacterList = characterList
             .filter(character => {
-                return (
-                    character.name.toLowerCase()
-                        .includes(searchTerm.toLowerCase())
-                    || character.nickname.toLowerCase()
-                        .includes(searchTerm.toLowerCase())
-                    || character.portrayed.toLowerCase()
-                        .includes(searchTerm.toLowerCase())
-                    || character.occupation.toString().toLowerCase()
-                        .includes(searchTerm.toLowerCase())
-                    || character.status.toLowerCase()
-                        .includes(searchTerm.toLowerCase())
-                    || character.birthday.toLowerCase()
-                        .includes(searchTerm.toLowerCase())
-                )
+                for (let index = 0; index < searchFields.length; index++) {
+                    const element = searchFields[index];
+                    if (character[element].toString().toLowerCase().includes(searchTerm)) {
+                        return character;
+                    }
+                }
+                return null
             })
+            .filter(Boolean)
 
         console.log(filteredCharacterList)
 
@@ -97,7 +93,7 @@ class HomePage extends React.Component {
         const { filteredCharacterList, searchTerm, pageNumber, countPerPage, message } = this.state;
         let occupations = "";
 
-        console.log(this.props, filteredCharacterList);
+        // console.log(this.props, filteredCharacterList);
 
         return (
             <div className="home-page-container">
