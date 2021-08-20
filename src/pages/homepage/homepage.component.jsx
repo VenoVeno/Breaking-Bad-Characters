@@ -146,11 +146,13 @@ class HomePage extends React.Component {
                     }
                 </div>
                 <div className="pagination">
-                    <CustomButton className="button previous-page"
+                    <CustomButton className={`button previous-page ${pageNumber - 1 === 0 ? "disabled-button" : ""} `}
                         onClick={() => this.previousPage()}>&laquo; Previous({pageNumber - 1})</CustomButton>
+
                     <input type="search" name="searchTerm" id="searchTerm" className="button search-button" placeholder="Search..."
                         value={searchTerm} onChange={(event) => this.updateSearchKey(event)} />
-                    <CustomButton className="button next-page"
+
+                    <CustomButton className={`button next-page ${Math.max(0, parseInt(this.upcomingPageCount(filteredCharacterList) - pageNumber)) === 0 ? "disabled-button" : ""}`}
                         onClick={() => this.nextPage()}>Next &raquo;({Math.max(0, parseInt(this.upcomingPageCount(filteredCharacterList) - pageNumber))})</CustomButton>
                 </div>
             </div>
