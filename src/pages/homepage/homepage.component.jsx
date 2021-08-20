@@ -5,6 +5,7 @@ import { Properties } from '../../global.properties';
 import shortid from 'shortid';
 
 import './homepage.styles.scss';
+import CustomButton from '../../components/custom-button/custom-button.component';
 
 class HomePage extends React.Component {
     constructor(props) {
@@ -29,7 +30,7 @@ class HomePage extends React.Component {
                 console.log(responseJSON)
                 this.setState({
                     characterList: responseJSON,
-                    maxPage: (responseJSON.length + this.state.countPerPage - 1) / this.state.countPerPage
+                    maxPage: this.upcomingPageCount(responseJSON)
                 }, () => this.updatedCharacterListFiltered())
             })
     }
@@ -49,10 +50,14 @@ class HomePage extends React.Component {
     }
 
     isNextPageAvailable = () => {
-        const { filteredCharacterList, countPerPage } = this.state;
-        if (this.state.pageNumber + 1 <= (filteredCharacterList.length + countPerPage - 1) / countPerPage)
+        if (this.state.pageNumber + 1 <= this.upcomingPageCount(this.state.filteredCharacterList))
             return true
         return false;
+    }
+
+    upcomingPageCount = (list) => {
+        const { countPerPage } = this.state
+        return (list.length + countPerPage - 1) / countPerPage;
     }
 
     updateSearchKey = (event) => {
@@ -141,10 +146,12 @@ class HomePage extends React.Component {
                     }
                 </div>
                 <div className="pagination">
-                    <div className="button previous-page" onClick={() => this.previousPage()}>&laquo; Previous({pageNumber - 1})</div>
+                    <CustomButton className="button previous-page"
+                        onClick={() => this.previousPage()}>&laquo; Previous({pageNumber - 1})</CustomButton>
                     <input type="search" name="searchTerm" id="searchTerm" className="button search-button" placeholder="Search..."
                         value={searchTerm} onChange={(event) => this.updateSearchKey(event)} />
-                    <div className="button next-page" onClick={() => this.nextPage()}>Next &raquo;({parseInt((filteredCharacterList.length + countPerPage - 1) / countPerPage) - pageNumber})</div>
+                    <CustomButton className="button next-page"
+                        onClick={() => this.nextPage()}>Next &raquo;({Math.max(0, parseInt(this.upcomingPageCount(filteredCharacterList) - pageNumber))})</CustomButton>
                 </div>
             </div>
         )

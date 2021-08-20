@@ -14,6 +14,7 @@ import InfoContainer from '../../components/info-container/info-container.compon
 
 import './character-preview.styles.scss';
 import Quotes from '../../components/quotes-display/quotes-display-component';
+import shortid from 'shortid';
 
 class CharacterPreview extends React.Component {
     constructor(props) {
@@ -74,7 +75,7 @@ class CharacterPreview extends React.Component {
                     !_isEmpty(character)
                         ? <div className="character">
                             <div className="image-name-container">
-                                <div className="image-container">
+                                <div className="image-wrapper">
                                     <img src={character.img} alt={character.name} />
                                 </div>
 
@@ -88,7 +89,6 @@ class CharacterPreview extends React.Component {
                                 </div>
                             </div>
                             <div className="details">
-
                                 <InfoContainer Icon={BirthdayIcon} content={character.birthday}
                                     className="birthday" labelContent="Birthday" />
 
@@ -111,13 +111,18 @@ class CharacterPreview extends React.Component {
                                 <InfoContainer Icon={SeasonIcon} content={character.appearance.toString()}
                                     className="season" labelContent="Seasons Acted" />
 
-                                {
-                                    !_isEmpty(quotes)
-                                        ? quotes.map(quotedata =>
-                                            <Quotes className="quotes" content={quotedata.quote} />
-                                        )
-                                        : <div className="search-error">{message}</div>
-                                }
+                                <InfoContainer Icon={SeasonIcon} content={character.better_call_saul_appearance.toString()}
+                                    className="better-call-saul" labelContent="Better Call Saul Appearance" />
+
+                                <div className="quotes-wrapper">
+                                    {
+                                        !_isEmpty(quotes)
+                                            ? quotes.map(quotedata =>
+                                                <Quotes key={shortid.generate()} className="quotes" content={quotedata.quote} />
+                                            )
+                                            : <div className="search-error">{message}</div>
+                                    }
+                                </div>
                             </div>
                         </div>
                         : <div className="no-character-error">{characterMessage}</div>
